@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 import numpy as np
+import SingleResult
 
 positionss = [[(129, 6), (236, 6), (343, 6)], [(22, 137), (129, 137), (236, 137), (343, 137), (450, 137)], [(22, 267), (129, 267), (236, 267), (343, 267), (450, 267)]]
 
@@ -438,6 +439,8 @@ def isNotBoom(listTemp):
         else:
             return compare(list1[2:5:1], list[0])
 
+
+
 global notBoomSet
 notBoomSet = set()
 all = []
@@ -463,7 +466,10 @@ for a in all4:
 # for item in all5:
 #     if not isNotBoom(item):
 #         boomCount = boomCount + 1
-
+maxPoint = 0
+topLine = ""
+allForChosen = []
+singleResults = []
 for item in all5:
     listTuples = []
     for listTempSingle in item:
@@ -479,8 +485,17 @@ for item in all5:
         list.append(listSingleTemp)
         actual.append(actualSingleTemp)
     point0 = calThree(list[0])
+    fantasy = "F"
     if point0 < 0:
         point0 = 0
+    if point0 == 7:
+        fantasy = "Q"
+    elif point0 == 8:
+        fantasy = "k"
+    elif point0 == 9:
+        fantasy = "A"
+    elif point0 >= 10:
+        fantasy = "T"
     point1 = calFive(list[1], actual[1])
     point1 = point1 * 2
     if point1 < 0:
@@ -488,19 +503,10 @@ for item in all5:
     point2 = calFive(list[2], actual[2])
     if point2 < 2:
         point2 = 0
-    if point0 + point1 + point2 > 15:
-        print item
-        print point0, point1, point2
+    singleResult = SingleResult(list, point0 + point1 + point2, fantasy)
+    singleResults.append(singleResult)
 
-
-
-
-
-
-
-# a = [13, 12, 14, 24, 36]
-# result[0].append(a[0])
-# print result
-# print firstFive(a)
-# print isSame(a[:])
-# print isFlush(a)
+for a in all:
+    for singleResult in singleResults:
+        if singleResult.isSub(a):
+            pass
